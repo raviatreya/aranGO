@@ -1,5 +1,17 @@
 aranGO
 ======
+
+-------
+-------
+note from raviatreya: I have made 3 modifications to diegogub's aranGO package.
+
+  * Modified the cursor delete function
+  * Implemented FetchNext which is simillar to FetchOne but returns a bool & error
+  * Modified the aql Execute function to check the cursor error and consolidate that with the returned error
+  
+-------
+-------
+
 ~~~
 go get github.com/diegogub/aranGO
 ~~~
