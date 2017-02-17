@@ -2,9 +2,10 @@ package aranGO
 
 import (
 	"errors"
-	nap "github.com/diegogub/napping"
 	"regexp"
 	"time"
+
+	nap "github.com/diegogub/napping"
 )
 
 // Database struct
@@ -126,6 +127,8 @@ func (d *Database) send(resource string, id string, method string, payload, resu
 		r, e = d.sess.nap.Put(url, payload, result, err)
 	case "PATCH":
 		r, e = d.sess.nap.Patch(url, payload, result, err)
+	case "DELETE":
+		r, e = d.sess.nap.Delete(url, result, err)
 	}
 	return r, e
 }
