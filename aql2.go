@@ -185,6 +185,13 @@ func NewAqlStruct() *AqlStruct {
 func (aq *AqlStruct) Execute(db *Database) (*Cursor, error) {
 	q := NewQuery(aq.Generate())
 	c, err := db.Execute(q)
+
+	if c.Err && err == nil {
+		err = errors.New(strconv.Itoa(c.ErrCode()) + ": " + c.ErrMsg)
+	} else if res.Err && err != nil {
+		err = errors.New("Execute err: " + err.Error() + ";; Cursor err: " + strconv.Itoa(c.ErrCode()) + ": " + c.ErrMsg)
+	}
+
 	return c, err
 }
 
