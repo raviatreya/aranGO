@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"reflect"
+	"strconv"
 	"time"
 )
 
@@ -113,6 +114,41 @@ func (c *Cursor) FetchOne(r interface{}) bool {
 		} else {
 			return true
 		}
+	}
+}
+
+// FetchNext is similar to FetchOne.  It is a custom implementation to access an API that exposes a bool if there are more items and an error if there was a parsing issue.
+func (c *Cursor) FetchNext(r interface{}) (bool, error) {
+	if c.Index > c.max {
+		if c.More {
+			//fetch rest from server
+			res, err := c.db.send("cursor", c.Id, "PUT", nil, c, c)
+
+			if err != nil {
+				return false, err
+			}
+
+			if res.Status() == 200 {
+				c.Index = 0
+				return true, nil
+			} else {
+				return false, errors.New("Cursor batch request returned status code of " + strconv.Itoa(res.Status()))
+			}
+		} else {
+			// last doc
+			return false, nil
+		}
+	} else {
+		b, err := json.Marshal(c.Result[c.Index])
+		if err != nil {
+			return false, err
+		}
+		err = json.Unmarshal(b, r)
+		if err != nil {
+			return false, err
+		}
+		c.Index++ // move to next value into result
+		return true, nil
 	}
 }
 
