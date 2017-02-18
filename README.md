@@ -3,11 +3,12 @@ aranGO
 
 -------
 -------
-note from raviatreya: I have made 3 modifications to diegogub's aranGO package.
+note from raviatreya: I have made 4 modifications to diegogub's aranGO package.
 
-  * Modified the cursor delete function
-  * Implemented FetchNext which is simillar to FetchOne but returns a bool & error
-  * Modified the aql Execute function to check the cursor error and consolidate that with the returned error
+  * Modified the cursor `Delete` method to return bool & error variables
+  * Implemented a cursor `FetchNext` method which is simillar to the FetchOne method, but returns a bool & error
+  * Modified the database `Execute` method to check the cursor error and consolidate it with the returned error
+  * Changed internal package name from `aranGO` to `arango`
   
 -------
 -------
