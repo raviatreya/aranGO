@@ -1,4 +1,4 @@
-package aranGO
+package arango
 
 import (
 	"encoding/json"

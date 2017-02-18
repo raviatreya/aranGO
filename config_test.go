@@ -1,4 +1,4 @@
-package aranGO
+package arango
 
 // Configure to start testing
 var (

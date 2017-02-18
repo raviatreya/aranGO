@@ -1,1 +1,1 @@
-package aranGO
+package arango

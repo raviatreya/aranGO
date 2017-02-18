@@ -1,4 +1,4 @@
-package aranGO
+package arango
 
 type Edge struct {
 	Id    string `json:"_id,omitempty"  `

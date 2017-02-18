@@ -1,4 +1,4 @@
-package aranGO
+package arango
 
 // TODO Must Implement revision control
 import (
