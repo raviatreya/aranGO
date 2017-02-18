@@ -35,22 +35,22 @@ func NewCursor(db *Database) *Cursor {
 }
 
 // Delete cursor in server and free RAM
-func (c *Cursor) Delete() error {
+func (c *Cursor) Delete() (bool, error) {
 	if c.Id == "" {
-		return errors.New("Invalid cursor to delete")
+		return false, nil
 	}
 	res, err := c.db.send("cursor", c.Id, "DELETE", nil, c, c)
 	if err != nil {
-		return nil
+		return false, err
 	}
 
 	switch res.Status() {
 	case 202:
-		return nil
+		return true, nil
 	case 404:
-		return errors.New("Cursor does not exist")
+		return false, nil
 	default:
-		return nil
+		return false, nil
 	}
 
 }
