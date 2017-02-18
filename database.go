@@ -3,6 +3,7 @@ package arango
 import (
 	"errors"
 	"regexp"
+	"strconv"
 	"time"
 
 	nap "github.com/diegogub/napping"
@@ -48,6 +49,13 @@ func (d *Database) Execute(q *Query) (*Cursor, error) {
 		}
 		c.max = len(c.Result) - 1
 		c.Time = t1.Sub(t0)
+
+		if c.Err && err == nil {
+			err = errors.New(strconv.Itoa(c.ErrCode()) + ": " + c.ErrMsg)
+		} else if c.Err && err != nil {
+			err = errors.New("Execute err: " + err.Error() + ";; Cursor err: " + strconv.Itoa(c.ErrCode()) + ": " + c.ErrMsg)
+		}
+
 		return c, nil
 	}
 }
