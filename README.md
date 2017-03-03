@@ -3,11 +3,14 @@ aranGO
 
 -------
 -------
-note from raviatreya: I have made 4 modifications to diegogub's aranGO package.
+note from raviatreya: I have made 7 modifications to diegogub's aranGO package.
 
   * Modified the cursor `Delete` method to return bool & error variables
   * Implemented a cursor `FetchNext` method which is simillar to the FetchOne method, but returns a bool & error
+  * Updated the cursor data structure to include all the possible content in `Extras`
   * Modified the database `Execute` method to check the cursor error and consolidate it with the returned error
+  * Updated the database CreateGraph method to based on https://github.com/wholedev/aranGO/commit/26a1ba532a0f4f50cc098d0f4a23a7ed6dbfdd17
+  * Updated the session DB method to return nil instead of panic if it fails - based on https://github.com/dhauenstein/aranGO/commit/c835e22062f6d20e506bd95a10b9a16317cdd1d0
   * Changed internal package name from `aranGO` to `arango`
   
 -------
