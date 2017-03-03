@@ -10,13 +10,14 @@ import (
 
 type Cursor struct {
 	db *Database `json:"-"`
-	Id string    `json:"Id"`
+	Id string    `json:"id"`
 
 	Index  int           `json:"-"`
 	Result []interface{} `json:"result"`
 	More   bool          `json:"hasMore"`
 	Amount int           `json:"count"`
 	Data   Extra         `json:"extra"`
+	Cached bool          `json:"cached"`
 
 	Err    bool   `json:"error"`
 	ErrMsg string `json:"errorMessage"`
@@ -130,7 +131,6 @@ func (c *Cursor) FetchNext(r interface{}) (bool, error) {
 
 			if res.Status() == 200 {
 				c.Index = 0
-				return true, nil
 			} else {
 				return false, errors.New("Cursor batch request returned status code of " + strconv.Itoa(res.Status()))
 			}
@@ -138,18 +138,19 @@ func (c *Cursor) FetchNext(r interface{}) (bool, error) {
 			// last doc
 			return false, nil
 		}
-	} else {
-		b, err := json.Marshal(c.Result[c.Index])
-		if err != nil {
-			return false, err
-		}
-		err = json.Unmarshal(b, r)
-		if err != nil {
-			return false, err
-		}
-		c.Index++ // move to next value into result
-		return true, nil
 	}
+
+	b, err := json.Marshal(c.Result[c.Index])
+	if err != nil {
+		return false, err
+	}
+	err = json.Unmarshal(b, r)
+	if err != nil {
+		return false, err
+	}
+	c.Index++ // move to next value into result
+	return true, nil
+
 }
 
 // move cursor index by 1
@@ -167,11 +168,18 @@ func (c *Cursor) Next(r interface{}) bool {
 }
 
 type Extra struct {
-	Stats Stats `json:"stats"`
+	Stats    Stats         `json:"stats"`
+	Warnings []interface{} `json:"warnings"`
 }
 
 type Stats struct {
-	FullCount int `json:"fullCount"`
+	WritesExecuted int     `json:"writesExecuted"`
+	WritesIgnored  int     `json:"writesIgnored"`
+	ScannedFull    int     `json:"scannedFull"`
+	ScannedIndex   int     `json:"scannedIndex"`
+	Filtered       int     `json:"filtered"`
+	ExecutionTime  float64 `json:"executionTime"`
+	FullCount      int     `json:"fullCount"`
 }
 
 func (c Cursor) Count() int {

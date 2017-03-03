@@ -2,9 +2,10 @@ package arango
 
 import (
 	"errors"
-	nap "github.com/diegogub/napping"
 	"net/url"
 	"regexp"
+
+	nap "github.com/diegogub/napping"
 )
 
 type Session struct {
@@ -215,7 +216,7 @@ func (s *Session) DB(name string) *Database {
 		// load collections
 		Collections(&db)
 	} else {
-		panic("Invalid DB")
+		return nil
 	}
 
 	return &db
