@@ -120,7 +120,7 @@ func (c *Cursor) FetchOne(r interface{}) bool {
 
 // FetchNext is similar to FetchOne.  It is a custom implementation to access an API that exposes a bool if there are more items and an error if there was a parsing issue.
 func (c *Cursor) FetchNext(r interface{}) (bool, error) {
-	if c.Index > c.max {
+	if c.Index >= len(c.Result) {
 		if c.More {
 			//fetch rest from server
 			res, err := c.db.send("cursor", c.Id, "PUT", nil, c, c)
