@@ -56,6 +56,10 @@ func (d *Database) Execute(q *Query) (*Cursor, error) {
 			err = errors.New("Execute err: " + err.Error() + ";; Cursor err: " + strconv.Itoa(c.ErrCode()) + ": " + c.ErrMsg)
 		}
 
+		if err != nil {
+			return nil, err
+		}
+
 		return c, nil
 	}
 }
